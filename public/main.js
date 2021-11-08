@@ -61,9 +61,7 @@ chatForm.addEventListener("submit", (e) => {
 
 // Output message
 function outputMessage(data) {
-  // if (data.length) {
-  //   for (var x = 0; x < data.length; x++) {
-      // Build out message div
+ 
       const div = document.createElement("div");
       div.classList.add("message");
       div.innerHTML = `<p class="meta">${data.username} <span>${data.time}</span></p>
@@ -71,10 +69,7 @@ function outputMessage(data) {
             ${data.text}
         </p>`;
       document.querySelector(".chat-messages").appendChild(div);
-    // }
-  // }
-
-  
+   
 }
 
 // Add roomname
@@ -88,3 +83,13 @@ function outputUsers(users) {
         ${users.map((user) => `<li>${user.username}</li>`).join("")}
     `;
 }
+
+
+//Prompt the user before leave chat room
+document.getElementById('leave-btn').addEventListener('click', () => {
+  const leaveRoom = confirm('Are you sure you want to leave the chatroom?');
+  if (leaveRoom) {
+    window.location = '../index.html';
+  } else {
+  }
+});
