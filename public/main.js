@@ -64,7 +64,7 @@ function outputMessage(data) {
  
       const div = document.createElement("div");
       div.classList.add("message");
-      div.innerHTML = `<p class="meta">${data.username} <span>${data.time}</span></p>
+      div.innerHTML = `<p class="meta">${data.username}</p>
         <p class="text">
             ${data.text}
         </p>`;
