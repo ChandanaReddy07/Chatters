@@ -1,5 +1,7 @@
 const express = require("express");
-const mongo=require('mongodb').MongoClient;
+require('dotenv').config()
+
+const mongo=require('mongoose')
 const path = require("path");
 const http = require("http");
 const formatMessage = require("./utils/messages");
@@ -19,7 +21,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 
 //connect to mongo
-mongo.connect('mongodb://127.0.0.1/mongochat',(err,db)=>{
+mongo.connect(process.env.DATABASE,(err,db)=>{
     if(err){
         throw err;
     }
@@ -34,9 +36,6 @@ io.on("connection", (socket) => {
     const user = userJoin(socket.id, username, room);
     socket.join(user.room);
 
-
-
-    
     chat.find().limit(100).sort({_id:1}).toArray((err,res)=>{
       if(err){
           throw err;
@@ -63,13 +62,13 @@ io.on("connection", (socket) => {
       });
   });
   //welcome to user
-  socket.emit("message", formatMessage("ChanduBote", `Welcome to ChattersChat ${user.username}`));
+  socket.emit("message", formatMessage("ChanduBote", `Welcome to ChattersChat`));
 
   //listen on chat msg
   socket.on("chatMessage", (msg) => {
     const user = getCurrentUser(socket.id);
     if (user) {
-      chat.insert({name:user.username,message:msg,room:user.room},()=>{
+      chat.insertOne({name:user.username,message:msg,room:user.room},()=>{
         // console.log("data",data)
       io.to(user.room).emit("message", formatMessage(user.username, msg));
 
